@@ -12,8 +12,8 @@ using namespace std;
 #include <iostream>
 #include <cstring>
 //------------------------------------------------------ Include personnel
-#include "TableauTrajets.h"
-#include "DFS.h"
+#include "../int/TableauTrajets.h"
+#include "../int/DFS.h"
 //------------------------------------------------------------- Constantes
 //----------------------------------------------------------------- PUBLIC
 //----------------------------------------------------- Méthodes publiques

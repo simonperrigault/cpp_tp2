@@ -14,10 +14,10 @@
 using namespace std;
 
 //------------------------------------------------------ Include personnel
-#include "Trajet.h"
-#include "TrajetSimple.h"
-#include "TrajetCompose.h"
-#include "Catalogue.h"
+#include "../int/Trajet.h"
+#include "../int/TrajetSimple.h"
+#include "../int/TrajetCompose.h"
+#include "../int/Catalogue.h"
 
 ///////////////////////////////////////////////////////////////////  PRIVE
 //------------------------------------------------------------- Constantes

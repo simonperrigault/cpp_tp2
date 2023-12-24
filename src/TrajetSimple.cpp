@@ -16,7 +16,7 @@ using namespace std;
 #include <cstring>
 
 //------------------------------------------------------ Include personnel
-#include "TrajetSimple.h"
+#include "../int/TrajetSimple.h"
 
 //------------------------------------------------------------- Constantes
 

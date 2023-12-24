@@ -16,9 +16,9 @@ using namespace std;
 #include <cstring>
 
 //------------------------------------------------------ Include personnel
-#include "Catalogue.h"
-#include "TrajetSimple.h"
-#include "TrajetCompose.h"
+#include "../int/Catalogue.h"
+#include "../int/TrajetSimple.h"
+#include "../int/TrajetCompose.h"
 
 //------------------------------------------------------------- Constantes
 

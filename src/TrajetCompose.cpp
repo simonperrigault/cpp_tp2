@@ -1,12 +1,12 @@
 /*************************************************************************
-                           Trajet  -  description
+                           TrajetCompose  -  description
                             -------------------
     début                : $DATE$
     copyright            : (C) $YEAR$ par $AUTHOR$
     e-mail               : $EMAIL$
 *************************************************************************/
 
-//---------- Réalisation de la classe <Trajet> (fichier Trajet.cpp) ------------
+//---------- Réalisation de la classe <TrajetCompose> (fichier TrajetCompose.cpp) ------------
 
 //---------------------------------------------------------------- INCLUDE
 
@@ -16,49 +16,54 @@ using namespace std;
 #include <cstring>
 
 //------------------------------------------------------ Include personnel
-#include "Trajet.h"
+#include "../int/TrajetCompose.h"
 
 //------------------------------------------------------------- Constantes
 
 //----------------------------------------------------------------- PUBLIC
 
 //----------------------------------------------------- Méthodes publiques
-
-
-//-------------------------------------------- Constructeurs - destructeur
-Trajet::Trajet (const Trajet & autre)
+void TrajetCompose::Afficher(unsigned int deltaTab) const
 {
-#ifdef MAP
-  cout << "Appel au constructeur de copie de <Trajet>" << endl;
-#endif
-  depart = new char[strlen(autre.depart)+1];
-  strcpy(depart, autre.depart);
-
-  arrivee = new char[strlen(autre.arrivee)+1];
-  strcpy(arrivee, autre.arrivee);
+  unsigned int i;
+  for (i=0; i<deltaTab; i++)
+  {
+    cout << "\t";
+  }
+  cout << "Trajet composé de " << depart << " à " << arrivee << " :";
+  tableauTrajets.Afficher(deltaTab+1, false);
 }
 
-Trajet::Trajet (const char* dep, const char* arr)
+//-------------------------------------------- Constructeurs - destructeur
+
+TrajetCompose::TrajetCompose (const TrajetCompose & autre)
+    : Trajet(autre), tableauTrajets(autre.tableauTrajets)
 {
 #ifdef MAP
-  cout << "Appel au constructeur de <Trajet>" << endl;
+  cout << "Appel au constructeur de copie de <TrajetCompose>" << endl;
 #endif
-  depart = new char[strlen(dep)+1];
-  strcpy(depart, dep);
+}
 
-  arrivee = new char[strlen(arr)+1];
-  strcpy(arrivee, arr);
-} //----- Fin de Trajet
-
-
-Trajet::~Trajet ( )
+TrajetCompose::TrajetCompose (TrajetSimple** listeT, unsigned int taille)
+    : Trajet(listeT[0]->GetDepart(), listeT[taille-1]->GetArrivee()), tableauTrajets()
 {
 #ifdef MAP
-  cout << "Appel au destructeur de <Trajet>" << endl;
+  cout << "Appel au constructeur de <TrajetCompose>" << endl;
 #endif
-  delete[] depart;
-  delete[] arrivee;
-} //----- Fin de ~Trajet
+  unsigned int i;
+  for (i = 0; i < taille; i++)
+  {
+    tableauTrajets.Ajouter(listeT[i]);
+  }
+} //----- Fin de TrajetCompose
+
+
+TrajetCompose::~TrajetCompose ( )
+{
+#ifdef MAP
+  cout << "Appel au destructeur de <TrajetCompose>" << endl;
+#endif
+} //----- Fin de ~TrajetCompose
 
 
 //------------------------------------------------------------------ PRIVE
