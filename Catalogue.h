@@ -1,0 +1,69 @@
+/*************************************************************************
+                           Catalogue  -  description
+                            -------------------
+    début                : $DATE$
+    copyright            : (C) $YEAR$ par $AUTHOR$
+    e-mail               : $EMAIL$
+*************************************************************************/
+
+//---------- Interface de la classe <Catalogue> (fichier Catalogue.h) ----------------
+#if ! defined ( CATALOGUE_H )
+#define CATALOGUE_H
+
+//--------------------------------------------------- Interfaces utilisées
+#include "Trajet.h"
+#include "TrajetSimple.h"
+#include "TableauTrajets.h"
+
+//------------------------------------------------------------- Constantes
+
+//------------------------------------------------------------------ Types
+
+//------------------------------------------------------------------------
+// Rôle de la classe <Catalogue>
+// Classe qui gère un catalogue de trajets et l'affichage de l'interface
+// pour l'utilisateur
+//------------------------------------------------------------------------
+
+class Catalogue
+{
+//----------------------------------------------------------------- PUBLIC
+
+public:
+//----------------------------------------------------- Méthodes publiques
+  void Afficher() const;
+  void AjouterTrajet();
+
+  void FaireParcoursSimple() const;
+  // renvoie la liste des trajets du catalogue qui ont le même départ et la même arrivée
+  // que ceux rentrés par l'utilisateur
+
+  void FaireParcoursComplexe() const;
+  // renvoie toutes les combinaisons de trajets du catalogue empruntant chaque
+  // ville au maximum une fois et allant du départ jusqu'à l'arrivée donnés par l'utilisateur
+
+//-------------------------------------------- Constructeurs - destructeur
+  Catalogue (unsigned int max=5);
+  // max représente le nombre maximal de trajets pouvant aller dans le
+  // catalogue à l'initialisation du tableau (peut augmenter)
+
+  virtual ~Catalogue ( );
+
+//------------------------------------------------------------------ PRIVE
+
+protected:
+//----------------------------------------------------- Méthodes protégées
+  TrajetSimple* creerTrajetSimple() const;
+
+  void dfs(const char*, Trajet** &, unsigned int, bool* &, const char*, Trajet*** &, unsigned int &, unsigned int &, unsigned int* &) const;
+  // fonction récursive permettant de construire les combinaisons de trajets
+  // pour le parcours complexe
+
+//----------------------------------------------------- Attributs protégés
+  TableauTrajets catalogue;
+};
+
+//-------------------------------- Autres définitions dépendantes de <Catalogue>
+
+#endif // CATALOGUE_H
+
