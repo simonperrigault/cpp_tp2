@@ -56,7 +56,7 @@ public:
 protected:
 //----------------------------------------------------- Méthodes protégées
 
-  void dfs(const char*, Trajet** &, unsigned int, bool* &, const char*, Trajet*** &, unsigned int &, unsigned int &, unsigned int* &) const;
+  void dfs(const string & currPoint, vector<Trajet*> & currChemin, vector<vector<Trajet*>> & res) const;
   // fonction récursive permettant de construire les combinaisons de trajets
   // pour le parcours complexe
 
