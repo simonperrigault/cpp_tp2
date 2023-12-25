@@ -69,12 +69,57 @@ void Catalogue::FaireParcoursSimple(const string & dep, const string & arr) cons
 
 void Catalogue::FaireParcoursComplexe(const string & dep, const string & arr) const
 {
-  
+  vector<vector<Trajet*>> res;
+  vector<Trajet*> currChemin;
+  dfs(dep, arr, currChemin, res);
+
+  if (res.empty())
+  {
+    cout << "Aucun trajet ne correspond à votre recherche" << endl;
+    return;
+  }
+
+  unsigned int i = 0;
+  for (vector<vector<Trajet*>>::const_iterator it = res.begin(); it != res.end(); ++it)
+  {
+    cout << "Solution n°" << ++i << endl;
+    for (vector<Trajet*>::const_iterator it2 = (*it).begin(); it2 != (*it).end(); ++it2)
+    {
+      (*it2)->Afficher();
+    }
+    cout << "\n";
+  }
 }
 
-void Catalogue::dfs(const string & currPoint, vector<Trajet*> & currChemin, vector<vector<Trajet*>> & res) const
+void Catalogue::dfs(const string & currPoint, const string & arr, vector<Trajet*> & currChemin, vector<vector<Trajet*>> & res) const
 {
-
+  if (currPoint == arr)
+  {
+    res.push_back(currChemin);
+    return;
+  }
+  for (vector<Trajet*>::const_iterator it = catalogue.begin(); it != catalogue.end(); ++it)
+  {
+    if ((*it)->GetDepart() == currPoint)
+    {
+      bool boucle = false;
+      for (vector<Trajet*>::const_iterator it2 = currChemin.begin(); it2 != currChemin.end(); ++it2)
+      {
+        if (*it == *it2)
+        {
+          boucle = true;
+          break;
+        }
+      }
+      if (boucle)
+      {
+        continue;
+      }
+      currChemin.push_back(*it);
+      dfs((*it)->GetArrivee(), arr, currChemin, res);
+      currChemin.pop_back();
+    }
+  }
 }
 
 
