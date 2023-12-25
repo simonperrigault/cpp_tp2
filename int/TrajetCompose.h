@@ -13,7 +13,7 @@
 //--------------------------------------------------- Interfaces utilisées
 #include "Trajet.h"
 #include "TrajetSimple.h"
-#include "TableauTrajets.h"
+#include <vector>
 
 //------------------------------------------------------------- Constantes
 
@@ -51,7 +51,7 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
-  TableauTrajets tableauTrajets;
+  vector<TrajetSimple*> tableauTrajets;
 };
 
 //-------------------------------- Autres définitions dépendantes de <TrajetCompose>

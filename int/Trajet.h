@@ -11,6 +11,9 @@
 #define TRAJET_H
 
 //--------------------------------------------------- Interfaces utilisées
+#include <string>
+
+using namespace std;
 
 //------------------------------------------------------------- Constantes
 
@@ -28,11 +31,11 @@ class Trajet
 
 public:
 //----------------------------------------------------- Méthodes publiques
-  const char* GetDepart() const
+  const string GetDepart() const
   {
     return depart;
   }
-  const char* GetArrivee() const
+  const string GetArrivee() const
   {
     return arrivee;
   }
@@ -48,13 +51,14 @@ public:
 protected:
 // on met le constructeur en protected car c'est une classe abstraite
   Trajet (const char* dep, const char* arr);
+  Trajet (const string & dep, const string & arr);
   Trajet (const Trajet & autre);
 
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
-  char* depart;
-  char* arrivee;
+  string depart;
+  string arrivee;
 };
 
 //-------------------------------- Autres définitions dépendantes de <Trajet>

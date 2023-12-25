@@ -13,7 +13,6 @@
 //-------------------------------------------------------- Include système
 using namespace std;
 #include <iostream>
-#include <cstring>
 
 //------------------------------------------------------ Include personnel
 #include "../int/Trajet.h"
@@ -27,27 +26,27 @@ using namespace std;
 
 //-------------------------------------------- Constructeurs - destructeur
 Trajet::Trajet (const Trajet & autre)
+  : depart(autre.depart), arrivee(autre.arrivee)
 {
 #ifdef MAP
   cout << "Appel au constructeur de copie de <Trajet>" << endl;
 #endif
-  depart = new char[strlen(autre.depart)+1];
-  strcpy(depart, autre.depart);
-
-  arrivee = new char[strlen(autre.arrivee)+1];
-  strcpy(arrivee, autre.arrivee);
 }
 
 Trajet::Trajet (const char* dep, const char* arr)
+  : depart(dep), arrivee(arr)
 {
 #ifdef MAP
   cout << "Appel au constructeur de <Trajet>" << endl;
 #endif
-  depart = new char[strlen(dep)+1];
-  strcpy(depart, dep);
+} //----- Fin de Trajet
 
-  arrivee = new char[strlen(arr)+1];
-  strcpy(arrivee, arr);
+Trajet::Trajet (const string & dep, const string & arr)
+  : depart(dep), arrivee(arr)
+{
+#ifdef MAP
+  cout << "Appel au constructeur de <Trajet>" << endl;
+#endif
 } //----- Fin de Trajet
 
 
@@ -56,8 +55,6 @@ Trajet::~Trajet ( )
 #ifdef MAP
   cout << "Appel au destructeur de <Trajet>" << endl;
 #endif
-  delete[] depart;
-  delete[] arrivee;
 } //----- Fin de ~Trajet
 
 

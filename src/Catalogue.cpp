@@ -13,7 +13,9 @@
 //-------------------------------------------------------- Include système
 using namespace std;
 #include <iostream>
-#include <cstring>
+#include <string>
+#include <stack>
+#include <map>
 
 //------------------------------------------------------ Include personnel
 #include "../int/Catalogue.h"
@@ -28,104 +30,115 @@ using namespace std;
 
 void Catalogue::Afficher() const
 {
-  catalogue.Afficher();
+  bool vide = true;
+  for (vector<Trajet*>::const_iterator it = catalogue.begin(); it != catalogue.end(); ++it)
+  {
+    (*it)->Afficher();
+    vide = false;
+  }
+  if (vide)
+  {
+    cout << "Catalogue vide" << endl;
+  }
 }
 
-void Catalogue::AjouterTrajet()
+void Catalogue::AjouterTrajet(const Trajet* nouveau)
 {
-  Trajet* nouveau;
-  int choixTrajet = -1;
+  catalogue.push_back(nouveau->clone());
+}
 
-  cout << "\n--- Ajout de trajet au catalogue ---" << endl;
-  cout << "0 : Trajet Simple" << endl;
-  cout << "1 : Trajet Composé" << endl;
-  cout << "Votre choix : ";
-  cin >> choixTrajet;
-  if (choixTrajet == 0)
+void Catalogue::FaireParcoursSimple(const string & dep, const string & arr) const
+{
+  bool trouve = false;
+  unsigned int res = 0;
+  for (vector<Trajet*>::const_iterator it = catalogue.begin(); it != catalogue.end(); ++it)
   {
-    nouveau = creerTrajetSimple();
-    if (nouveau == NULL)
+    if ((*it)->GetDepart() == dep && (*it)->GetArrivee() == arr)
     {
-      return;
+      trouve = true;
+      cout << "Solution n°" << ++res << endl;
+      (*it)->Afficher();
+      cout << "\n";
     }
   }
-  else
+  if (!trouve)
   {
-    TrajetSimple** listeCompose;
-    unsigned int tailleCompose;
-    unsigned int i,j;
-    cout << "Nombre de trajets dans le trajet composé : ";
-    cin >> tailleCompose;
-    listeCompose = new TrajetSimple*[tailleCompose];
-    for (i=0; i<tailleCompose; i++)
+    cout << "Aucun trajet ne correspond à votre recherche" << endl;
+  }
+}
+
+void Catalogue::FaireParcoursComplexe(const string & dep, const string & arr) const
+{
+  // map<string, vector<vector<Trajet*>>> res;
+  // stocke les trajets qui permettent d'aller à la ville depuis dep
+  unsigned int i=0;
+  vector<Trajet*>::const_iterator it, itera;
+  stack<Trajet*> stack;
+  vector<Trajet*> currChemin;
+  string currPoint = dep;
+  bool boucle;
+
+  for (it = catalogue.begin(); it != catalogue.end(); ++it)
+  {
+    if ((*it)->GetDepart() == currPoint)
     {
-      cout << "\nEtape " << i+1 << " du trajet composé" << endl;
-      listeCompose[i] = creerTrajetSimple();
-      if (listeCompose[i] == NULL)
-      {
-        for (j=0; j<i; j++)
-        {
-          delete listeCompose[j];
-        }
-        delete[] listeCompose;
-        return;
-      }
+      stack.push(*it);
     }
-    for (i=0; i<tailleCompose-1; i++)
-    {
-      if (strcmp(listeCompose[i]->GetArrivee(), listeCompose[i+1]->GetDepart()))
-      {
-        cout << "Entrez des trajets continus" << endl;
-        for (i=0; i<tailleCompose; i++)
-        {
-          delete listeCompose[i];
-        }
-        delete[] listeCompose;
-        return;
-      }
-    }
-    nouveau = new TrajetCompose(listeCompose, tailleCompose);
-    for (i=0; i<tailleCompose; i++)
-    {
-      delete listeCompose[i];
-    }
-    delete[] listeCompose;
   }
 
-  catalogue.Ajouter(nouveau);
-  delete nouveau;
+  while (!stack.empty())
+  {
+    Trajet* currTrajet = stack.top();
+    stack.pop();
+    currChemin.push_back(currTrajet);
+    currPoint = currTrajet->GetArrivee();
+    if (currPoint == arr)
+    {
+      cout << "Solution n°" << ++i << endl;
+      for (it = currChemin.begin(); it != currChemin.end(); ++it)
+      {
+        (*it)->Afficher();
+      }
+      cout << "\n";
+      currChemin.pop_back();
+      currPoint = currTrajet->GetDepart();
+    }
+    else
+    {
+      for (it = catalogue.begin(); it != catalogue.end(); ++it)
+      {
+        if ((*it)->GetDepart() == currPoint)
+        {
+          // vérifie qu'on fait pas de boucle
+          boucle = false;
+          for (itera = currChemin.begin(); itera != currChemin.end(); ++itera)
+          {
+            if ((*itera) == (*it))
+            {
+              boucle = true;
+              break;
+            }
+          }
+
+          if (!boucle)
+          {
+            stack.push(*it);
+          }
+        }
+      }
+    }
+  }
 }
 
-void Catalogue::FaireParcoursSimple() const
+
+Catalogue & Catalogue::operator = (const Catalogue & autre)
 {
-  char dep[20];
-  char arr[20];
-
-  cout << "Départ : ";
-  cin >> dep;
-  cout << "Arrivée : ";
-  cin >> arr;
-  cout << '\n';
-
-  catalogue.ParcoursSimple(dep, arr);
-}
-
-void Catalogue::FaireParcoursComplexe() const
-{
-  char dep[20];
-  char arr[20];
-
-  cout << "Départ : ";
-  cin >> dep;
-  cout << "Arrivée : ";
-  cin >> arr;
-  cout << '\n';
-
-  catalogue.ParcoursComplexe(dep, arr);
+  catalogue = autre.catalogue;
+  return *this;
 }
 
 //-------------------------------------------- Constructeurs - destructeur
-Catalogue::Catalogue (unsigned int max) : catalogue(max)
+Catalogue::Catalogue (unsigned int max) : catalogue()
 {
 #ifdef MAP
   cout << "Appel au constructeur de <Catalogue>" << endl;
@@ -138,30 +151,14 @@ Catalogue::~Catalogue ( )
 #ifdef MAP
   cout << "Appel au destructeur de <Catalogue>" << endl;
 #endif
-  
+  vector<Trajet*>::iterator it;
+  for (it = catalogue.begin(); it != catalogue.end(); ++it)
+  {
+    delete *it;
+  }
 } //----- Fin de ~Catalogue
 
 
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Méthodes protégées
-TrajetSimple* Catalogue::creerTrajetSimple() const
-{
-  char depart[20];
-  char arrivee[20];
-  char moyen[20];
-  TrajetSimple* nouveau;
-  cout << "Départ : ";
-  cin >> depart;
-  cout << "Arrivée : ";
-  cin >> arrivee;
-  cout << "Moyen de transport : ";
-  cin >> moyen;
-  if (!strcmp(depart, arrivee))
-  {
-    cout << "Entrez un départ et une arrivée différents" << endl;
-    return NULL;
-  }
-  nouveau = new TrajetSimple(depart, arrivee, moyen);
-  return nouveau;
-}

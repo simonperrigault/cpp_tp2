@@ -13,7 +13,7 @@
 //--------------------------------------------------- Interfaces utilisées
 #include "Trajet.h"
 #include "TrajetSimple.h"
-#include "TableauTrajets.h"
+#include <vector>
 
 //------------------------------------------------------------- Constantes
 
@@ -32,15 +32,17 @@ class Catalogue
 public:
 //----------------------------------------------------- Méthodes publiques
   void Afficher() const;
-  void AjouterTrajet();
+  void AjouterTrajet(const Trajet* nouveau);
 
-  void FaireParcoursSimple() const;
+  void FaireParcoursSimple(const string & dep, const string & arr) const;
   // renvoie la liste des trajets du catalogue qui ont le même départ et la même arrivée
   // que ceux rentrés par l'utilisateur
 
-  void FaireParcoursComplexe() const;
+  void FaireParcoursComplexe(const string & dep, const string & arr) const;
   // renvoie toutes les combinaisons de trajets du catalogue empruntant chaque
   // ville au maximum une fois et allant du départ jusqu'à l'arrivée donnés par l'utilisateur
+
+  Catalogue & operator=(const Catalogue & autre);
 
 //-------------------------------------------- Constructeurs - destructeur
   Catalogue (unsigned int max=5);
@@ -53,14 +55,13 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-  TrajetSimple* creerTrajetSimple() const;
 
   void dfs(const char*, Trajet** &, unsigned int, bool* &, const char*, Trajet*** &, unsigned int &, unsigned int &, unsigned int* &) const;
   // fonction récursive permettant de construire les combinaisons de trajets
   // pour le parcours complexe
 
 //----------------------------------------------------- Attributs protégés
-  TableauTrajets catalogue;
+  vector<Trajet*> catalogue;
 };
 
 //-------------------------------- Autres définitions dépendantes de <Catalogue>

@@ -39,6 +39,7 @@ public:
 //-------------------------------------------- Constructeurs - destructeur
   TrajetSimple(const TrajetSimple & autre);
   TrajetSimple (const char* dep, const char* arr, const char* moy);
+  TrajetSimple (const string & dep, const string & arr, const string & moy);
 
   virtual ~TrajetSimple ( );
 
@@ -48,7 +49,7 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 
 //----------------------------------------------------- Attributs protégés
-  char* moyen;
+  string moyen;
 };
 
 //-------------------------------- Autres définitions dépendantes de <TrajetSimple>
