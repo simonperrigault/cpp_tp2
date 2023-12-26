@@ -21,6 +21,8 @@ using namespace std;
 
 ///////////////////////////////////////////////////////////////////  PRIVE
 //------------------------------------------------------------- Constantes
+const string FICHIER = "data.csv";
+
 
 //------------------------------------------------------------------ Types
 
@@ -41,7 +43,63 @@ int main(int argc, char* argv[])
   Trajet* nouveau;
   Catalogue catalogue;
   string dep, arr;
+  unsigned int n,m;
 
+  while (choixMenu)
+  {
+    cout << "\n----- Chargement du catalogue -----" << endl;
+    cout << "1 : Tout charger" << endl;
+    cout << "2 : Charger les trajets simples" << endl;
+    cout << "3 : Charger les trajets composés" << endl;
+    cout << "4 : Charger les trajets partant d'une ville" << endl;
+    cout << "5 : Charger les trajets arrivant dans une ville" << endl;
+    cout << "6 : Charger un intervalle de trajets" << endl;
+    cout << "0 : Ne pas charger de catalogue" << endl;
+    cout << "Votre choix : ";
+    cin >> choixMenu;
+    cout << "\n";
+    switch(choixMenu)
+    {
+      case 0:
+        break;
+      case 1:
+        catalogue.ChargerCatalogue(FICHIER, Catalogue::ALL);
+        choixMenu = 0;
+        break;
+      case 2:
+        catalogue.ChargerCatalogue(FICHIER, Catalogue::SIMPLE);
+        choixMenu = 0;
+        break;
+      case 3:
+        catalogue.ChargerCatalogue(FICHIER, Catalogue::COMPOSE);
+        choixMenu = 0;
+        break;
+      case 4:
+        cout << "Départ : ";
+        cin >> dep;
+        catalogue.ChargerCatalogue(FICHIER, Catalogue::DEPART, 0, 0, dep);
+        choixMenu = 0;
+        break;
+      case 5:
+        cout << "Arrivée : ";
+        cin >> dep;
+        catalogue.ChargerCatalogue(FICHIER, Catalogue::ARRIVEE, 0, 0, dep);
+        choixMenu = 0;
+        break;
+      case 6:
+        cout << "Borne inférieure : ";
+        cin >> n;
+        cout << "Borne supérieure : ";
+        cin >> m;
+        catalogue.ChargerCatalogue(FICHIER, Catalogue::INTERVALLE, n, m);
+        choixMenu = 0;
+        break;
+      default:
+        cout << "Veuillez entrez une valeur valide" << endl;
+    }
+  }
+
+  choixMenu = 1;
 
   while (choixMenu)
   {

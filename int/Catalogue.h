@@ -30,7 +30,7 @@ class Catalogue
 //----------------------------------------------------------------- PUBLIC
 
 public:
-  const enum ModeSauvegarde {ALL, SIMPLE, COMPOSE, DEPART, ARRIVEE, INTERVALLE};
+  enum ModeSauvegarde {ALL, SIMPLE, COMPOSE, DEPART, ARRIVEE, INTERVALLE};
 
 //----------------------------------------------------- Méthodes publiques
   void Afficher() const;
@@ -44,7 +44,7 @@ public:
   // renvoie toutes les combinaisons de trajets du catalogue empruntant chaque
   // ville au maximum une fois et allant du départ jusqu'à l'arrivée donnés par l'utilisateur
 
-  void ChargerCatalogue(const string & nomFichier, int mode, int n = 0, int m = 0, const string & ville = "");
+  void ChargerCatalogue(const string & nomFichier, int mode, unsigned int n = 0, unsigned int m = 0, const string & ville = "");
 
 //-------------------------------------------- Constructeurs - destructeur
   Catalogue ();

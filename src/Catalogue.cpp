@@ -93,7 +93,7 @@ void Catalogue::FaireParcoursComplexe(const string & dep, const string & arr) co
   }
 }
 
-void Catalogue::ChargerCatalogue(const string & nomFichier, int mode, int n, int m, const string & ville)
+void Catalogue::ChargerCatalogue(const string & nomFichier, int mode, unsigned int n, unsigned int m, const string & ville)
 {
   ifstream fichier(nomFichier);
   if (!fichier)
@@ -136,8 +136,6 @@ void Catalogue::ChargerCatalogue(const string & nomFichier, int mode, int n, int
 
     if (type == "TS")
     {
-      getline(ss, depart, ';');
-      getline(ss, arrivee, ';');
       getline(ss, moyen, ';');
       catalogue.push_back(new TrajetSimple(depart, arrivee, moyen));
     }
