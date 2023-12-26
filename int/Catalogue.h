@@ -30,6 +30,8 @@ class Catalogue
 //----------------------------------------------------------------- PUBLIC
 
 public:
+  const enum ModeSauvegarde {ALL, SIMPLE, COMPOSE, DEPART, ARRIVEE, INTERVALLE};
+
 //----------------------------------------------------- Méthodes publiques
   void Afficher() const;
   void AjouterTrajet(const Trajet* nouveau);

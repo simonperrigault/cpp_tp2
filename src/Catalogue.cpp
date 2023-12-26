@@ -16,6 +16,8 @@ using namespace std;
 #include <string>
 #include <stack>
 #include <map>
+#include <fstream>
+#include <sstream>
 
 //------------------------------------------------------ Include personnel
 #include "../int/Catalogue.h"
@@ -93,7 +95,72 @@ void Catalogue::FaireParcoursComplexe(const string & dep, const string & arr) co
 
 void Catalogue::ChargerCatalogue(const string & nomFichier, int mode, int n, int m, const string & ville)
 {
-  
+  ifstream fichier(nomFichier);
+  if (!fichier)
+  {
+    cout << "Erreur lors de l'ouverture du fichier" << endl;
+    return;
+  }
+  unsigned int nombreTrajets = 0, tailleCompose = 0, i = 0;
+  string ligne, type, depart, arrivee, moyen;
+  TrajetSimple** listeCompose;
+  while (getline(fichier, ligne))
+  {
+    ++nombreTrajets;
+    if (mode == INTERVALLE && (nombreTrajets < n || nombreTrajets > m))
+    {
+      continue;
+    }
+
+    stringstream ss(ligne);
+    getline(ss, type, ';');
+    if (mode == SIMPLE && type == "TC")
+    {
+      continue;
+    }
+    if (mode == COMPOSE && type == "TS")
+    {
+      continue;
+    }
+
+    getline(ss, depart, ';');
+    getline(ss, arrivee, ';');
+    if (mode == DEPART && depart != ville)
+    {
+      continue;
+    }
+    if (mode == ARRIVEE && arrivee != ville)
+    {
+      continue;
+    }
+
+    if (type == "TS")
+    {
+      getline(ss, depart, ';');
+      getline(ss, arrivee, ';');
+      getline(ss, moyen, ';');
+      catalogue.push_back(new TrajetSimple(depart, arrivee, moyen));
+    }
+    else
+    {
+      ss >> tailleCompose;
+      ss.ignore(); // on passe le ; qui n'est pas pris par le >>
+      listeCompose = new TrajetSimple*[tailleCompose];
+      for (i=0; i<tailleCompose; ++i)
+      {
+        getline(ss, depart, ';');
+        getline(ss, arrivee, ';');
+        getline(ss, moyen, ';');
+        listeCompose[i] = new TrajetSimple(depart, arrivee, moyen);
+      }
+      catalogue.push_back(new TrajetCompose(listeCompose, tailleCompose));
+      for (i=0; i<tailleCompose; ++i)
+      {
+        delete listeCompose[i];
+      }
+      delete[] listeCompose;
+    }
+  }
 }
 
 
