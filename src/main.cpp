@@ -108,6 +108,7 @@ int main(int argc, char* argv[])
     cout << "2 : Ajouter un trajet au catalogue" << endl;
     cout << "3 : Faire un parcours" << endl;
     cout << "4 : Faire un parcours utilisant plusieurs trajets" << endl;
+    cout << "5 : Sauvegarder le catalogue" << endl;
     cout << "0 : Quitter" << endl;
     cout << "Votre choix : ";
     cin >> choixMenu;
@@ -141,6 +142,64 @@ int main(int argc, char* argv[])
         cout << "\n";
         catalogue.FaireParcoursComplexe(dep, arr);
         break;
+      case 5:
+        while (choixMenu)
+        {
+          cout << "\n----- Sauvegarde du catalogue -----" << endl;
+          cout << "1 : Tout sauvegarder" << endl;
+          cout << "2 : Sauvegarder les trajets simples" << endl;
+          cout << "3 : Sauvegarder les trajets composés" << endl;
+          cout << "4 : Sauvegarder les trajets partant d'une ville" << endl;
+          cout << "5 : Sauvegarder les trajets arrivant dans une ville" << endl;
+          cout << "6 : Sauvegarder un intervalle de trajets" << endl;
+          cout << "0 : Annuler" << endl;
+          cout << "Votre choix : ";
+          cin >> choixMenu;
+          cout << "\n";
+          switch(choixMenu)
+          {
+            case 0:
+              break;
+            case 1:
+              catalogue.SauvegarderCatalogue(FICHIER, Catalogue::ALL);
+              choixMenu = 0;
+              break;
+            case 2:
+              catalogue.SauvegarderCatalogue(FICHIER, Catalogue::SIMPLE);
+              choixMenu = 0;
+              break;
+            case 3:
+              catalogue.SauvegarderCatalogue(FICHIER, Catalogue::COMPOSE);
+              choixMenu = 0;
+              break;
+            case 4:
+              cout << "Départ : ";
+              cin >> dep;
+              catalogue.SauvegarderCatalogue(FICHIER, Catalogue::DEPART, 0, 0, dep);
+              choixMenu = 0;
+              break;
+            case 5:
+              cout << "Arrivée : ";
+              cin >> dep;
+              catalogue.SauvegarderCatalogue(FICHIER, Catalogue::ARRIVEE, 0, 0, dep);
+              choixMenu = 0;
+              break;
+            case 6:
+              cout << "Borne inférieure : ";
+              cin >> n;
+              cout << "Borne supérieure : ";
+              cin >> m;
+              catalogue.SauvegarderCatalogue(FICHIER, Catalogue::INTERVALLE, n, m);
+              choixMenu = 0;
+              break;
+            default:
+              cout << "Veuillez entrez une valeur valide" << endl;
+          }
+        }
+
+        choixMenu = 1;
+        break;
+
       default:
         cout << "Veuillez entrez une valeur valide" << endl;
     }

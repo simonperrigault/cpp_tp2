@@ -43,6 +43,9 @@ public:
   virtual void Afficher(unsigned int deltaTab = 0) const = 0;
   // deltaTab définit le nombre de tabulations à ajouter avant chaque ligne
   // pour faire un affichage plus lisible pour les trajets composés
+
+  virtual string getCSV() const = 0;
+  virtual bool EstType(const string & type) const = 0;
   virtual Trajet * clone() const = 0;
   virtual ~Trajet ( );
 

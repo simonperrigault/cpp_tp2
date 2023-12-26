@@ -33,6 +33,12 @@ void TrajetSimple::Afficher(unsigned int deltaTab) const
   cout << "Trajet simple " << depart << " -> " << arrivee << " en " << moyen << endl;
 }
 
+string TrajetSimple::getCSV() const
+{
+  string res = "TS;" + depart + ";" + arrivee + ";" + moyen;
+  return res;
+}
+
 //-------------------------------------------- Constructeurs - destructeur
 TrajetSimple::TrajetSimple(const TrajetSimple & autre)
   : Trajet(autre), moyen(autre.moyen)

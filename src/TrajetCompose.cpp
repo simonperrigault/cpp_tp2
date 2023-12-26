@@ -36,6 +36,17 @@ void TrajetCompose::Afficher(unsigned int deltaTab) const
   }
 }
 
+string TrajetCompose::getCSV() const
+{
+  string res = "TC;";
+  res += depart + ";" + arrivee + ";" + to_string(tableauTrajets.size());
+  for (vector<TrajetSimple*>::const_iterator it = tableauTrajets.begin(); it != tableauTrajets.end(); ++it)
+  {
+    res += ";" + (*it)->getCSV();
+  }
+  return res;
+}
+
 
 //-------------------------------------------- Constructeurs - destructeur
 

@@ -146,6 +146,7 @@ void Catalogue::ChargerCatalogue(const string & nomFichier, int mode, unsigned i
       listeCompose = new TrajetSimple*[tailleCompose];
       for (i=0; i<tailleCompose; ++i)
       {
+        getline(ss, type, ';');
         getline(ss, depart, ';');
         getline(ss, arrivee, ';');
         getline(ss, moyen, ';');
@@ -158,6 +159,46 @@ void Catalogue::ChargerCatalogue(const string & nomFichier, int mode, unsigned i
       }
       delete[] listeCompose;
     }
+  }
+}
+
+void Catalogue::SauvegarderCatalogue(const string & nomFichier, int mode, unsigned int n, unsigned int m, const string & ville) const
+{
+  ofstream fichier(nomFichier);
+  if (!fichier)
+  {
+    cout << "Erreur lors de l'ouverture du fichier" << endl;
+    return;
+  }
+
+  unsigned int nombreTrajets = 0;
+  for (vector<Trajet*>::const_iterator it = catalogue.begin(); it != catalogue.end(); ++it)
+  {
+    ++nombreTrajets;
+    if (mode == INTERVALLE && (nombreTrajets < n || nombreTrajets > m))
+    {
+      continue;
+    }
+
+    if (mode == SIMPLE && (*it)->EstType("TC"))
+    {
+      continue;
+    }
+    if (mode == COMPOSE && (*it)->EstType("TS"))
+    {
+      continue;
+    }
+
+    if (mode == DEPART && (*it)->GetDepart() != ville)
+    {
+      continue;
+    }
+    if (mode == ARRIVEE && (*it)->GetArrivee() != ville)
+    {
+      continue;
+    }
+
+    fichier << (*it)->getCSV() << endl;
   }
 }
 

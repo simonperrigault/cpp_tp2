@@ -35,6 +35,12 @@ public:
     return new TrajetSimple(*this);
   }
 
+  virtual string getCSV() const;
+  virtual bool EstType(const string & type) const
+  {
+    return type == "TS";
+  }
+
 
 //-------------------------------------------- Constructeurs - destructeur
   TrajetSimple(const TrajetSimple & autre);

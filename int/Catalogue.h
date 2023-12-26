@@ -45,6 +45,7 @@ public:
   // ville au maximum une fois et allant du départ jusqu'à l'arrivée donnés par l'utilisateur
 
   void ChargerCatalogue(const string & nomFichier, int mode, unsigned int n = 0, unsigned int m = 0, const string & ville = "");
+  void SauvegarderCatalogue(const string & nomFichier, int mode, unsigned int n = 0, unsigned int m = 0, const string & ville = "") const;
 
 //-------------------------------------------- Constructeurs - destructeur
   Catalogue ();

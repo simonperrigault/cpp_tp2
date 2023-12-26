@@ -43,6 +43,12 @@ public:
   // construit un trajet composé à partir de la liste de trajets,
   // les trajets doivent être continus
 
+  virtual string getCSV() const;
+  virtual bool EstType(const string & type) const
+  {
+    return type == "TC";
+  }
+
   virtual ~TrajetCompose ( );
 
 //------------------------------------------------------------------ PRIVE
