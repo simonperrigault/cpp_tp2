@@ -91,46 +91,14 @@ void Catalogue::FaireParcoursComplexe(const string & dep, const string & arr) co
   }
 }
 
-void Catalogue::dfs(const string & currPoint, const string & arr, vector<Trajet*> & currChemin, vector<vector<Trajet*>> & res) const
+void Catalogue::ChargerCatalogue(const string & nomFichier, int mode, int n, int m, const string & ville)
 {
-  if (currPoint == arr)
-  {
-    res.push_back(currChemin);
-    return;
-  }
-  for (vector<Trajet*>::const_iterator it = catalogue.begin(); it != catalogue.end(); ++it)
-  {
-    if ((*it)->GetDepart() == currPoint)
-    {
-      bool boucle = false;
-      for (vector<Trajet*>::const_iterator it2 = currChemin.begin(); it2 != currChemin.end(); ++it2)
-      {
-        if (*it == *it2)
-        {
-          boucle = true;
-          break;
-        }
-      }
-      if (boucle)
-      {
-        continue;
-      }
-      currChemin.push_back(*it);
-      dfs((*it)->GetArrivee(), arr, currChemin, res);
-      currChemin.pop_back();
-    }
-  }
+  
 }
 
-
-Catalogue & Catalogue::operator = (const Catalogue & autre)
-{
-  catalogue = autre.catalogue;
-  return *this;
-}
 
 //-------------------------------------------- Constructeurs - destructeur
-Catalogue::Catalogue (unsigned int max) : catalogue()
+Catalogue::Catalogue () : catalogue()
 {
 #ifdef MAP
   cout << "Appel au constructeur de <Catalogue>" << endl;
@@ -154,3 +122,33 @@ Catalogue::~Catalogue ( )
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Méthodes protégées
+void Catalogue::dfs(const string & currPoint, const string & arr, vector<Trajet*> & currChemin, vector<vector<Trajet*>> & res) const
+{
+  if (currPoint == arr)
+  {
+    res.push_back(currChemin);
+    return;
+  }
+  for (vector<Trajet*>::const_iterator it = catalogue.begin(); it != catalogue.end(); ++it)
+  {
+    if ((*it)->GetDepart() == currPoint)
+    {
+      bool dejafait = false;
+      for (vector<Trajet*>::const_iterator it2 = currChemin.begin(); it2 != currChemin.end(); ++it2)
+      {
+        if (*it == *it2)
+        {
+          dejafait = true;
+          break;
+        }
+      }
+      if (dejafait)
+      {
+        continue;
+      }
+      currChemin.push_back(*it);
+      dfs((*it)->GetArrivee(), arr, currChemin, res);
+      currChemin.pop_back();
+    }
+  }
+}

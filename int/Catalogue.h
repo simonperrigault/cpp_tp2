@@ -42,10 +42,10 @@ public:
   // renvoie toutes les combinaisons de trajets du catalogue empruntant chaque
   // ville au maximum une fois et allant du départ jusqu'à l'arrivée donnés par l'utilisateur
 
-  Catalogue & operator=(const Catalogue & autre);
+  void ChargerCatalogue(const string & nomFichier, int mode, int n = 0, int m = 0, const string & ville = "");
 
 //-------------------------------------------- Constructeurs - destructeur
-  Catalogue (unsigned int max=5);
+  Catalogue ();
   // max représente le nombre maximal de trajets pouvant aller dans le
   // catalogue à l'initialisation du tableau (peut augmenter)
 
